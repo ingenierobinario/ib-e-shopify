@@ -28,7 +28,7 @@ jobs:
                 <password>${ORG_PASSWORD}</password>
               </server>
             </servers>
-          </settings>" > $HOME/.m2/settings.xml
+          </settings>" > settings.xml
       - name: Checkout this repo
         uses: actions/checkout@v4
       - name: Cache dependencies
