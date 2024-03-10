@@ -18,7 +18,7 @@ http://www.mulesoft.org/schema/mule/orders-process-api http://www.mulesoft.org/s
 http://www.mulesoft.org/schema/mule/deliveries-process-api http://www.mulesoft.org/schema/mule/deliveries-process-api/current/mule-deliveries-process-api.xsd"> <http:listener-config name="lh-e-shopify-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
-    <apikit:config name="lh-e-shopify-config" api="resource::ecfc2f1a-8db5-4db2-bd67-d1576aac835d:lh-e-shopify:1.0.1:raml:zip:lh-e-shopify.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="lh-e-shopify-config" api="resource::ecfc2f1a-8db5-4db2-bd67-d1576aac835d:lh-e-shopify:1.0.2:raml:zip:lh-e-shopify.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 	
 	<os:config name="ObjectStore_Config" doc:name="ObjectStore Config" doc:id="be9f68f0-08a5-4ece-a43d-d709a013c7d0" />
 	<customers-process-api:config name="Customers_Process_API_Config" doc:name="Customers Process API Config" doc:id="f3f3c18d-65a6-43df-b7ae-bc4215afd333" property_host="localhost" property_port="80" property_protocol="HTTP" />
