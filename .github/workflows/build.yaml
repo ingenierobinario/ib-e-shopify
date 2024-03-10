@@ -10,83 +10,57 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Create Maven settings.xml
-        env:
-          ORG_USERNAME: ${{ secrets.ORG_USERNAME }}
-          ORG_PASSWORD: ${{ secrets.ORG_PASSWORD }}
-          ANYPOINT_PLATFORM_CLIENT_ID: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }}
-          ANYPOINT_PLATFORM_CLIENT_SECRET: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }}
-        run: |
-          echo "<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0'
-                xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-                xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0
-                                    https://maven.apache.org/xsd/settings-1.0.0.xsd'>
-            <servers>
-              <server>
-                <id>anypoint-exchange-v3</id>
-                <username>${ORG_USERNAME}</username>
-                <password>${ORG_PASSWORD}</password>
-              </server>
-            </servers>
-          </settings>" > settings.xml
-      - name: Checkout this repo
-        uses: actions/checkout@v4
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: 8
-      - name: Build with Maven
-        env:
-          ANYPOINT_PLATFORM_CLIENT_ID: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }}
-          ANYPOINT_PLATFORM_CLIENT_SECRET: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }}
-        run: |
-          mvn -B package --file pom.xml \
-          -Danypoint.platform.client_id=$ANYPOINT_PLATFORM_CLIENT_ID \
-          -Danypoint.platform.client_secret=$ANYPOINT_PLATFORM_CLIENT_SECRET
-      - name: Stamp artifact file name with commit hash
-        run: |
-          artifactName1=$(ls target/*.jar | head -1)
-          commitHash=$(git rev-parse --short "$GITHUB_SHA")
-          artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
-          mv $artifactName1 $artifactName2
-      - name: Upload artifact 
-        uses: actions/upload-artifact@v4
-        with:
-            name: artifacts
-            path: target/*.jar
-
-
+    - name: Checkout this repo
+      uses: actions/checkout@v4
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: 8
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+    - name: Stamp artifact file name with commit hash
+      run: |
+        artifactName1=$(ls target/*.jar | head -1)
+        commitHash=$(git rev-parse --short "$GITHUB_SHA")
+        artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
+        mv $artifactName1 $artifactName2
+    - name: Upload artifact 
+      uses: actions/upload-artifact@v4
+      with:
+          name: artifacts
+          path: target/*.jar
+        
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:    
-      - name: Checkout this repo
-        uses: actions/checkout@v4
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - uses: actions/download-artifact@v4
-        with:
-          name: artifacts
-      - name: Deploy to Sandbox environment in Cloudhub
-        env:
-          ANYPOINT_PLATFORM_CLIENT_ID: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }}
-          ANYPOINT_PLATFORM_CLIENT_SECRET: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }}
-        run: |
-          artifactName=$(ls *.jar | head -1)
-          mvn deploy -DmuleDeploy \
-           -Dmule.artifact=$artifactName \
-           -Danypoint.platform.client_id=$ANYPOINT_PLATFORM_CLIENT_ID \
-           -Danypoint.platform.client_secret=$ANYPOINT_PLATFORM_CLIENT_SECRET
+    - name: Checkout this repo
+      uses: actions/checkout@v4
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - uses: actions/download-artifact@v4
+      with:
+        name: artifacts
+    - name: Deploy to Sandbox
+      env:
+        ANYPOINT_PLATFORM_CLIENT_ID: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }}
+        ANYPOINT_PLATFORM_CLIENT_SECRET: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }}
+      run: |
+        artifactName=$(ls *.jar | head -1)
+        mvn deploy -DmuleDeploy \
+         -Dmule.artifact=$artifactName \
+         -Danypoint.platform.client_id="$ANYPOINT_PLATFORM_CLIENT_ID" \
+         -Danypoint.platform.client_secret="$ANYPOINT_PLATFORM_CLIENT_SECRET" 
