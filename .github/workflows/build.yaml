@@ -10,6 +10,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Create Maven settings.xml
+        env:
+          ORG_USERNAME: ${{ secrets.ORG_USERNAME }}
+          ORG_PASSWORD: ${{ secrets.ORG_PASSWORD }}
+          ANYPOINT_PLATFORM_CLIENT_ID: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }}
+          ANYPOINT_PLATFORM_CLIENT_SECRET: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }}
+        run: |
+          echo "<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0'
+                xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0
+                                    https://maven.apache.org/xsd/settings-1.0.0.xsd'>
+            <servers>
+              <server>
+                <id>anypoint-exchange-v3</id>
+                <username>${ORG_USERNAME}</username>
+                <password>${ORG_PASSWORD}</password>
+              </server>
+            </servers>
+          </settings>" > $HOME/.m2/settings.xml
       - name: Checkout this repo
         uses: actions/checkout@v4
       - name: Cache dependencies
@@ -43,6 +62,8 @@ jobs:
         with:
             name: artifacts
             path: target/*.jar
+
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
