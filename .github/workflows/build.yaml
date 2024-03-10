@@ -25,7 +25,13 @@ jobs:
         distribution: 'zulu'
         java-version: 8
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      env:
+        ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+        ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+      run: |
+        mvn -B package --file pom.xml \
+          -Danypoint.platform.username=$ANYPOINT_USERNAME \
+          -Danypoint.platform.password=$ANYPOINT_PASSWORD
     - name: Stamp artifact file name with commit hash
       run: |
         artifactName1=$(ls target/*.jar | head -1)
