@@ -78,12 +78,6 @@
 		</dependency>
 		<dependency>
 			<groupId>ecfc2f1a-8db5-4db2-bd67-d1576aac835d</groupId>
-			<artifactId>mule-plugin-ib-p-orders</artifactId>
-			<version>1.0.0</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>ecfc2f1a-8db5-4db2-bd67-d1576aac835d</groupId>
 			<artifactId>mule-plugin-ib-p-deliveries</artifactId>
 			<version>1.0.0</version>
 			<classifier>mule-plugin</classifier>
@@ -94,6 +88,12 @@
 			<version>1.0.2</version>
 			<classifier>raml</classifier>
 			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>ecfc2f1a-8db5-4db2-bd67-d1576aac835d</groupId>
+			<artifactId>mule-plugin-ib-p-orders</artifactId>
+			<version>1.0.1</version>
+			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
 
