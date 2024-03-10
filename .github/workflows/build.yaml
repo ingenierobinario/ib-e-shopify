@@ -25,13 +25,13 @@ jobs:
         distribution: 'zulu'
         java-version: 8
     - name: Create Maven settings.xml
-        uses: actions/setup-java@v4
-        with:
-          java-version: '8'
-          distribution: 'zulu'
-          server-id: 'anypoint-exchange-v3' # Value of the <id> element of the <server> in your settings.xml
-          server-username: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }} # Anypoint Platform Client ID
-          server-password: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }} # Anypoint Platform Client Secret
+      uses: actions/setup-java@v4
+      with:
+        java-version: '8'
+        distribution: 'zulu'
+        server-id: 'anypoint-exchange-v3' # Value of the <id> element of the <server> in your settings.xml
+        server-username: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }} # Anypoint Platform Client ID
+        server-password: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }} # Anypoint Platform Client Secret
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Stamp artifact file name with commit hash
