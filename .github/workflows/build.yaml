@@ -11,29 +11,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout this repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
     - name: Cache dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@v3
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
     - name: Set up JDK 1.8
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
         java-version: 8
+    # Aquí se configura el archivo settings.xml con las credenciales
     - name: Create Maven settings.xml
-      uses: actions/setup-java@v4
-      with:
-        java-version: '8'
-        distribution: 'zulu'
-        server-id: 'anypoint-exchange-v3' # Value of the <id> element of the <server> in your settings.xml
-        server-username: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }} # Anypoint Platform Client ID
-        server-password: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }} # Anypoint Platform Client Secret
+      run: |
+        echo "<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0'
+              xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+              xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0
+                                  https://maven.apache.org/xsd/settings-1.0.0.xsd'>
+          <servers>
+            <server>
+              <id>anypoint-exchange-v3</id>
+              <username>${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }}</username>
+              <password>${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }}</password>
+            </server>
+          </servers>
+        </settings>" > settings.xml
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B package --file pom.xml --settings settings.xml
     - name: Stamp artifact file name with commit hash
       run: |
         artifactName1=$(ls target/*.jar | head -1)
@@ -41,7 +48,7 @@ jobs:
         artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
         mv $artifactName1 $artifactName2
     - name: Upload artifact 
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
           name: artifacts
           path: target/*.jar
@@ -51,24 +58,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:    
     - name: Checkout this repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
     - name: Cache dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@v3
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v3
       with:
         name: artifacts
     - name: Deploy to Sandbox
       env:
-        ANYPOINT_PLATFORM_CLIENT_ID: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }}
-        ANYPOINT_PLATFORM_CLIENT_SECRET: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }}
+        USERNAME: ${{ secrets.anypoint_platform_username }}
+        PASSWORD: ${{ secrets.anypoint_platform_password }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
          -Dmule.artifact=$artifactName \
-         -Danypoint.platform.client_id="$ANYPOINT_PLATFORM_CLIENT_ID" \
-         -Danypoint.platform.client_secret="$ANYPOINT_PLATFORM_CLIENT_SECRET" 
+         -Danypoint.username="$USERNAME" \
+         -Danypoint.password="$PASSWORD" 
