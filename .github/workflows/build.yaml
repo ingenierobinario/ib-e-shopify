@@ -38,9 +38,9 @@ jobs:
               <password>${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }}</password>
             </server>
           </servers>
-        </settings>" > settings.xml
+        </settings>" > ~/.m2/settings.xml
     - name: Build with Maven
-      run: mvn -B package --file pom.xml --settings settings.xml
+      run: mvn -B package --file pom.xml --settings ./settings.xml
     - name: Stamp artifact file name with commit hash
       run: |
         artifactName1=$(ls target/*.jar | head -1)
