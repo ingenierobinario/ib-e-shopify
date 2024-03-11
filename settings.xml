@@ -1,9 +1,10 @@
  <?xml version="1.0"?>
  <settings>
- <server>
+ <servers>
+     <server>
       <id>anypoint-exchange-v3</id>
       <username>muleingenierobinario2024</username>
-      <password>05cOORD$1993</password>    
- </server>
+      <password>05cOORD$1993</password>  
+     </server>  
+ </servers>
  </settings>
- 
