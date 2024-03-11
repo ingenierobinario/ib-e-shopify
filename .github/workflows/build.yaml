@@ -1,3 +1,5 @@
+# This workflow will build a MuleSoft project and deploy to CloudHub
+
 name: Build and Deploy to Sandbox
 
 on:
@@ -24,23 +26,23 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: 8
-    - name: Set up Maven settings.xml for Anypoint Platform authentication
+
+    - name: Configure Maven settings.xml
       run: |
-        echo "<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0'
-                xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-                xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0
-                                    https://maven.apache.org/xsd/settings-1.0.0.xsd'>
+        echo "<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd'>
           <servers>
             <server>
               <id>anypoint-exchange-v3</id>
-              <username>${{ secrets.ANYPOINT_PLATFORM_USERNAME }}</username>
-              <password>${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}</password>
+              <username>${{ secrets.anypoint_platform_username }}</username>
+              <password>${{ secrets.anypoint_platform_password }}</password>
             </server>
           </servers>
         </settings>" > $HOME/.m2/settings.xml
-
+      env:
+        ANYPOINT_PLATFORM_USERNAME: ${{ secrets.anypoint_platform_username }}
+        ANYPOINT_PLATFORM_PASSWORD: ${{ secrets.anypoint_platform_password }}
     - name: Build with Maven
-      run: mvn -B package --file pom.xml -DskipTests -s $HOME/.m2/settings.xml
+      run: mvn -B package --file pom.xml --settings $HOME/.m2/settings.xml
     - name: Stamp artifact file name with commit hash
       run: |
         artifactName1=$(ls target/*.jar | head -1)
@@ -78,4 +80,4 @@ jobs:
         mvn deploy -DmuleDeploy \
          -Dmule.artifact=$artifactName \
          -Danypoint.username="$USERNAME" \
-         -Danypoint.password="$PASSWORD" 
+         -Danypoint.password="$PASSWORD"
