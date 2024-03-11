@@ -26,23 +26,8 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: 8
-
-    - name: Configure Maven settings.xml
-      run: |
-        echo "<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd'>
-          <servers>
-            <server>
-              <id>anypoint-exchange-v3</id>
-              <username>${{ secrets.anypoint_platform_username }}</username>
-              <password>${{ secrets.anypoint_platform_password }}</password>
-            </server>
-          </servers>
-        </settings>" > $HOME/.m2/settings.xml
-      env:
-        ANYPOINT_PLATFORM_USERNAME: ${{ secrets.anypoint_platform_username }}
-        ANYPOINT_PLATFORM_PASSWORD: ${{ secrets.anypoint_platform_password }}
     - name: Build with Maven
-      run: mvn -B package --file pom.xml --settings $HOME/.m2/settings.xml
+      run: mvn -B package --file pom.xml --settings ./settings.xml
     - name: Stamp artifact file name with commit hash
       run: |
         artifactName1=$(ls target/*.jar | head -1)
