@@ -43,7 +43,7 @@ jobs:
       if: always() # Esto garantiza que el paso se ejecute incluso si pasos anteriores fallaron.
       run: cat $HOME/.m2/settings.xml
     - name: Build with Maven
-      run: mvn -X -B package --file pom.xml -DskipTests
+      run: mvn -X -B package --file pom.xml -DskipTests -s $HOME/.m2/settings.xml
     - name: Stamp artifact file name with commit hash
       run: |
         artifactName1=$(ls target/*.jar | head -1)
