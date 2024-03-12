@@ -71,4 +71,5 @@ jobs:
          -Dmule.artifact=$artifactName \
          -Danypoint.username="$USERNAME" \
          -Danypoint.password="$PASSWORD" \
-         -DmuleVersion=$MULE_RUNTIME_VERSION
+         -DmuleVersion=$MULE_RUNTIME_VERSION \
+         -Denv=Sandbox

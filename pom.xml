@@ -36,6 +36,7 @@
 					      <password>${anypoint.password}</password>
 					      <applicationName>${app.name}</applicationName>
 					      <environment>${env}</environment>
+					      <region>eu-west-1</region>
 					      <workerType>MICRO</workerType>
 					      <workers>1</workers>
 					      <objectStoreV2>true</objectStoreV2>
