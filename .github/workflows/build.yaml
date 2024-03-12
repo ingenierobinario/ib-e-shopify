@@ -9,7 +9,7 @@ on:
     branches: [ master ]
     
 jobs:
-  build:
+  build-artifact:
     runs-on: ubuntu-latest
     env:
       USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
@@ -43,8 +43,8 @@ jobs:
           name: artifacts
           path: target/*.jar
         
-  deploy:
-    needs: build
+  deploy-cloudhub:
+    needs: build-artifact
     runs-on: ubuntu-latest
     steps:    
     - name: Checkout this repo
@@ -59,13 +59,17 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: artifacts
+    - name: Extract Mule Runtime Version
+      run: echo "MULE_RUNTIME_VERSION=$(mvn help:evaluate -Dexpression=mule.version -q -DforceStdout)" >> $GITHUB_ENV
     - name: Deploy to Sandbox
       env:
         USERNAME: ${{ secrets.anypoint_platform_username }}
         PASSWORD: ${{ secrets.anypoint_platform_password }}
+        MULE_RUNTIME_VERSION: '4.3.0'
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
          -Dmule.artifact=$artifactName \
          -Danypoint.username="$USERNAME" \
-         -Danypoint.password="$PASSWORD"
+         -Danypoint.password="$PASSWORD" \
+         -DmuleVersion=$MULE_RUNTIME_VERSION
