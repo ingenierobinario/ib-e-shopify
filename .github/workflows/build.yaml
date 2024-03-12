@@ -60,7 +60,7 @@ jobs:
       with:
         name: artifacts
     - name: Extract Mule Runtime Version
-      run: echo "MULE_RUNTIME_VERSION=$(mvn help:evaluate -Dexpression=mule.version -q -DforceStdout)" >> $GITHUB_ENV
+      run: echo "MULE_RUNTIME_VERSION=$(mvn help:evaluate -Dexpression=muleVersion -q -DforceStdout)" >> $GITHUB_ENV
     - name: Deploy to Sandbox
       env:
         USERNAME: ${{ secrets.anypoint_platform_username }}
