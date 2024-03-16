@@ -50,13 +50,10 @@ output application/json
     
 </flow>
     <flow name="post:\customers:application\json:lh-e-shopify-config">
-		<idempotent-message-validator doc:name="Idempotent Message Validator" doc:id="d92c8c87-18ee-4780-a2ac-b7f74cc06bf8" idExpression="#[headers.attributes.'x-idempotency-key']" storePrefix="customers" >
-			<os:private-object-store alias="customers" maxEntries="1000" entryTtl="1" entryTtlUnit="DAYS" expirationInterval="4" expirationIntervalUnit="DAYS" config-ref="ObjectStore_Config" />
-		</idempotent-message-validator>
-		<ee:transform doc:name="varInitialData" doc:id="a5b2c7a9-7e83-41d9-802c-a0599ecb1f9d" >
+		<ee:transform doc:name="varInitialData" doc:id="a5b2c7a9-7e83-41d9-802c-a0599ecb1f9d">
 			<ee:message />
-			<ee:variables >
-				<ee:set-variable variableName="varInitialData" ><![CDATA[%dw 2.0
+			<ee:variables>
+				<ee:set-variable variableName="varInitialData"><![CDATA[%dw 2.0
 output application/json
 ---
 {
@@ -67,6 +64,9 @@ output application/json
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
+		<idempotent-message-validator doc:name="Idempotent Message Validator" doc:id="d92c8c87-18ee-4780-a2ac-b7f74cc06bf8" idExpression="#[vars.varInitialData.idempotencykey]" storePrefix="customers" >
+			<os:private-object-store alias="customers" maxEntries="1000" entryTtl="1" entryTtlUnit="DAYS" expirationInterval="4" expirationIntervalUnit="DAYS" config-ref="ObjectStore_Config" />
+		</idempotent-message-validator>
 		<logger level="INFO" doc:name="START post customers" doc:id="e1820ee0-8fdf-49c6-96d0-6c1efa9743b5" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&#10;	message: "starting post customers",&#10;	content: vars.varInitialData&#10;}]' />
 		<ee:transform doc:name="canonical data model" doc:id="fe1aaa31-74db-48f3-8fe2-78541f20154b" >
 			<ee:message >
