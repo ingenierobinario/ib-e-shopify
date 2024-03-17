@@ -15,6 +15,13 @@
             <SizeBasedTriggeringPolicy size="10 MB"/>
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
+        
+        <Http name="Elasticsearch-cloud" url="https://8200101034af4d8e92a51b59936b5afc.us-central1.gcp.cloud.es.io:443/_bulk?pretty">
+            <Property name="Content-Type" value="application/json" />
+            <Property name="Authorization" value="ApiKey XaBEADFfTG2PZ11eWqNKpA" />
+            <PatternLayout pattern='%msg' />
+        </Http>
+        
     </Appenders>
 
     <Loggers>
@@ -28,6 +35,7 @@
 
         <AsyncRoot level="INFO">
             <AppenderRef ref="file"/>
+            <AppenderRef ref="Elasticsearch-cloud" />
         </AsyncRoot>
     </Loggers>
 
