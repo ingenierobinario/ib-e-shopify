@@ -65,6 +65,8 @@ jobs:
       env:
         USERNAME: ${{ secrets.anypoint_platform_username }}
         PASSWORD: ${{ secrets.anypoint_platform_password }}
+        ENV_CLIENT_ID: ${{ secrets.env_client_id }}
+        ENV_CLIENT_SECRET: ${{ secrets.env_client_secret }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
@@ -73,4 +75,6 @@ jobs:
          -Danypoint.password="$PASSWORD" \
          -DmuleVersion=$MULE_RUNTIME_VERSION \
          -Denv=Sandbox \
-         -Dcloudhub.disableLogging=true
+         -Dcloudhub.disableLogging=true \
+         -Danypoint.platform.client_id="$ENV_CLIENT_ID" \
+         -Danypoint.platform.client_id="$ENV_CLIENT_SECRET"
