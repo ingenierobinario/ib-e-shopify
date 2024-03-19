@@ -77,4 +77,4 @@ jobs:
          -Denv=Sandbox \
          -Dcloudhub.disableLogging=true \
          -Danypoint.platform.client_id="$ENV_CLIENT_ID" \
-         -Danypoint.platform.client_id="$ENV_CLIENT_SECRET"
+         -Danypoint.platform.client_secret="$ENV_CLIENT_SECRET"
