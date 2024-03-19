@@ -90,7 +90,7 @@ var fullName = payload.nombre splitBy " "
 		<logger level="INFO" doc:name="END post customers" doc:id="d3e8fc9b-8be5-480c-955b-74190e0689d3" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&#10;	message: "customer posted successfully",&#10;	content: vars.varInitialData&#10;}]' />
 		<error-handler >
 			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="aef35539-d724-4718-b45a-5d4a16f3ef56" type="ANY">
-				<logger level="ERROR" doc:name="error trying to post customer" doc:id="62cbdfc4-a856-4593-929e-f58055ae3677" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	content: vars.varInitialData,&#10;	error: error&#10;}]" />
+				<logger level="ERROR" doc:name="error trying to post customer" doc:id="62cbdfc4-a856-4593-929e-f58055ae3677" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	content: vars.varInitialData,&#10;	errorDescription: error.description,&#10;	message: "error trying to post customer"&#10;	&#10;	}]' />
 				<ee:transform doc:name="response" doc:id="bf754f46-2390-4a0d-94eb-a07c02ae0630">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0

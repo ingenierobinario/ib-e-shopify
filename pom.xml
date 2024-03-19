@@ -31,15 +31,15 @@
 				<configuration>
 					<classifier>mule-application</classifier>
 					<cloudHubDeployment>
-						  <muleVersion>${app.runtime}</muleVersion>
-					      <username>${anypoint.username}</username>
-					      <password>${anypoint.password}</password>
-					      <applicationName>${app.name}</applicationName>
-					      <environment>${env}</environment>
-					      <region>eu-west-1</region>
-					      <workerType>MICRO</workerType>
-					      <workers>1</workers>
-					      <objectStoreV2>true</objectStoreV2>
+						<muleVersion>${app.runtime}</muleVersion>
+						<username>${anypoint.username}</username>
+						<password>${anypoint.password}</password>
+						<applicationName>${app.name}</applicationName>
+						<environment>${env}</environment>
+						<region>eu-west-1</region>
+						<workerType>MICRO</workerType>
+						<workers>1</workers>
+						<objectStoreV2>true</objectStoreV2>
 					</cloudHubDeployment>
 				</configuration>
 			</plugin>
@@ -85,13 +85,6 @@
 		</dependency>
 		<dependency>
 			<groupId>57b8640c-936c-4178-9adf-bd515ec313d0</groupId>
-			<artifactId>ib-e-shopify</artifactId>
-			<version>1.0.0</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
-			<groupId>57b8640c-936c-4178-9adf-bd515ec313d0</groupId>
 			<artifactId>mule-plugin-ib-p-orders</artifactId>
 			<version>1.0.0</version>
 			<classifier>mule-plugin</classifier>
@@ -107,6 +100,13 @@
 			<artifactId>mule-plugin-ib-p-customers</artifactId>
 			<version>1.0.0</version>
 			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>57b8640c-936c-4178-9adf-bd515ec313d0</groupId>
+			<artifactId>ib-e-shopify</artifactId>
+			<version>1.0.1</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
 		</dependency>
 	</dependencies>
 
