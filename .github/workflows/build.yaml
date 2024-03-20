@@ -76,4 +76,4 @@ jobs:
          -DmuleVersion=$MULE_RUNTIME_VERSION \
          -Denv=Sandbox \
          -Dcloudhub.disableLogging=true \
-         -Dcloudhub.environment.variables="anypoint.platform.client_id=$ENV_CLIENT_ID,anypoint.platform.client_secret=$ENV_CLIENT_SECRET"
+         -Dproperties="anypoint.platform.client_id=$ENV_CLIENT_ID,anypoint.platform.client_secret=$ENV_CLIENT_SECRET"
