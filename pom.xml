@@ -3,18 +3,18 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.devoteam</groupId>
-	<artifactId>ib-e-shopify</artifactId>
+	<artifactId>ib-e-shopify-dev</artifactId>
 	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
-	<name>ib-e-shopify</name>
+	<name>ib-e-shopify-dev</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<app.runtime>4.6.1</app.runtime>
-		<mule.maven.plugin.version>4.0.0</mule.maven.plugin.version>
+		<mule.maven.plugin.version>4.1.0</mule.maven.plugin.version>
 	</properties>
 
 	<build>
