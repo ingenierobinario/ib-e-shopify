@@ -4,9 +4,9 @@ name: Build and Deploy to Sandbox
 
 on:
   push:
-    branches: [ master ]
+    branches: [ dev ]
   pull_request:
-    branches: [ master ]
+    branches: [ dev ]
     
 jobs:
   build-artifact:
