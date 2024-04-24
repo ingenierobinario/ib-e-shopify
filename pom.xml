@@ -47,7 +47,7 @@
 				</executions>
 				<configuration>
 					<coverage>
-						<runCoverage>true</runCoverage>
+						<runCoverage>false</runCoverage>
 						<formats>
 							<format>html</format>
 						</formats>

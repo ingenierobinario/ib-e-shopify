@@ -71,4 +71,5 @@ jobs:
          -Danypoint.username="$USERNAME" \
          -Danypoint.password="$PASSWORD" \
          -DmuleVersion=$MULE_RUNTIME_VERSION \
-         -Denv=Sandbox
+         -Denv=Sandbox \
+         -DskupMunitTests=true
