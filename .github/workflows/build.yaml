@@ -62,8 +62,8 @@ jobs:
       run: echo "MULE_RUNTIME_VERSION=$(mvn help:evaluate -Dexpression=app.runtime -q -DforceStdout)" >> $GITHUB_ENV
     - name: Deploy to Sandbox
       env:
-        USERNAME: ${{ secrets.anypoint_platform_username }}
-        PASSWORD: ${{ secrets.anypoint_platform_password }}
+        USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+        PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
