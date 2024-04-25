@@ -64,6 +64,7 @@ jobs:
       env:
         USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
         PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+        KEYSECRET: ${{ secrets.KEYSECRET }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
@@ -72,4 +73,7 @@ jobs:
          -Danypoint.password="$PASSWORD" \
          -DmuleVersion=$MULE_RUNTIME_VERSION \
          -Denv=Sandbox \
+         -Dkeysecret=training
+         -Danypoint.platform.config.analytics.agent.enabled=true
+         -Danypoint.platform.visualizer.layer=experience
          -DskipMunitTests

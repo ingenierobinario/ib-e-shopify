@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:customers-process-api="http://www.mulesoft.org/schema/mule/customers-process-api"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:customers-process-api="http://www.mulesoft.org/schema/mule/customers-process-api"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/customers-process-api http://www.mulesoft.org/schema/mule/customers-process-api/current/mule-customers-process-api.xsd">
+http://www.mulesoft.org/schema/mule/customers-process-api http://www.mulesoft.org/schema/mule/customers-process-api/current/mule-customers-process-api.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
 	
 <http:listener-config name="ib-e-shopify-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
-    <apikit:config name="ib-e-shopify-config" api="resource::289585b0-527d-4896-b389-06d0aca817f1:ib-e-shopify:1.0.0:raml:zip:ib-e-shopify.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="ib-e-shopify-config" api="resource::289585b0-527d-4896-b389-06d0aca817f1:ib-e-shopify:1.0.1:raml:zip:ib-e-shopify.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 	<os:config name="ObjectStore_Config" doc:name="ObjectStore Config" doc:id="28e7e72e-c7cf-4fd2-aa8a-0a1908cc42a3" />
 	<ee:object-store-caching-strategy name="Caching_Strategy" doc:name="Caching Strategy" doc:id="4cc38011-d80b-46f5-aa31-436c01224b6b" keyGenerationExpression="#[vars.varInitialData.id]" >
 		<os:private-object-store alias="customer_cache" persistent="false" entryTtl="60" entryTtlUnit="MINUTES" expirationInterval="60" config-ref="ObjectStore_Config" />

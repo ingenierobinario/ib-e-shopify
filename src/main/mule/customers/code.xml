@@ -23,7 +23,8 @@ output application/json
 		</ee:transform>
 		<logger level="INFO" doc:name="START get customers by id" doc:id="7d2446b6-002b-418c-87cb-8506aea00ffe" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&#10;	message: "starting get customers by id",&#10;	content: vars.varInitialData&#10;}]' />
 		<ee:cache doc:name="Cache" doc:id="3733d1c1-3ff0-4917-9c97-334547eff0e1" cachingStrategy-ref="Caching_Strategy" >
-			<customers-process-api:retrieve-customer-by-id doc:name="Retrieve customer by ID" doc:id="cddba0e1-1b50-4690-b56e-d6e46941e29c" id="#[vars.varInitialData.customerId]" x-correlation-id="#[vars.varInitialData.correlationId]" x-source-system="#[vars.varInitialData.origin]" config-ref="Customers_Process_API_Config"/>
+			<customers-process-api:retrieve-customer-by-id doc:name="Retrieve customer by ID" doc:id="cddba0e1-1b50-4690-b56e-d6e46941e29c" id="#[vars.varInitialData.customerId]" x-correlation-id="#[vars.varInitialData.correlationId]" x-source-system="#[vars.varInitialData.origin]" config-ref="Customers_Process_API_Config" />
+
 		</ee:cache>
 		<ee:transform doc:name="response" doc:id="f972926e-acfc-4302-90e8-e09c7b9f1f16" >
 			<ee:message >
@@ -40,7 +41,7 @@ output application/json
 		<logger level="INFO" doc:name="END get customers by id" doc:id="1efc1af7-71a1-4563-b284-41f3a6698413" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&#10;	message: "get customers by id successfully",&#10;	content: vars.varInitialData,&#10;	results: payload&#10;	&#10;}]' />
 		<error-handler >
 			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="657942e3-080f-4fd1-ba37-4ca5811b8d01" type="ANY">
-				<logger level="INFO" doc:name="error trying to get customer by id" doc:id="e11339dc-8194-41f3-8213-6fdfab4f3c6c" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	error: error,&#10;	message: "error trying to get customer by id",&#10;	content: vars.varInitialData&#10;}]' />
+				<logger level="ERROR" doc:name="error trying to get customer by id" doc:id="e11339dc-8194-41f3-8213-6fdfab4f3c6c" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	error: error,&#10;	message: "error trying to get customer by id",&#10;	content: vars.varInitialData&#10;}]' />
 				<ee:transform doc:name="response" doc:id="344ec6f7-8f43-448f-a9ab-a03d4509b0ef">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0

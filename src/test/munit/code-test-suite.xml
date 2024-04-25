@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="code-test-suite.xml" />
+	<munit:test name="code-test-suite-get:\customers\(id):ib-e-shopify-configTest" doc:id="c0a28788-c37f-4367-8ff2-7d9ea0003ffc" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when call customers api" doc:id="5fe9294f-53c0-4b3c-b417-c512d9a70c30" processor="customers-process-api:retrieve-customer-by-id">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Retrieve customer by ID" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="b7fae1d5-d980-467d-85c6-b4761ab96959" >
+				<munit:payload value='#[output application/json &#10;---&#10;{&#10;  "name": "Juan Pérez",&#10;  "email": "juan.perez@email.com"&#10;}]' mediaType="application/json" />
+				<munit:attributes value='#[{&#10;	"headers" : {&#10;		"x-correlation-id": "cb0327ce-c9dc-4052-8815-69149df65f74",&#10;		"x-source-system": "SHOPIFY",&#10;		"uriParams":{&#10;			"id": "003WU000001qydpYAA"&#10;		}&#10;		&#10;	}&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\customers\(id):ib-e-shopify-config" doc:id="457e11a0-a7bf-4870-b77d-bff121f2b4b5" name="get:\customers\(id):ib-e-shopify-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="87fbf555-50e2-4a0a-88a6-ebf031e8cb07" actual="#[payload]" expected='#[{&#10;  "nombre": "Juan Pérez",&#10;  "email": "juan.perez@email.com"&#10;}]' message="retrieved customer successfully"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
